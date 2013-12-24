@@ -24,7 +24,11 @@ def user(username):
 @app.route('/<username>/<aggregator>')
 def aggregator(username, aggregator):
     return render_template('aggregator.html', aggregator=aggregator, username=username)
-    
+
+@app.error_handler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+
 # Main
 if __name__ == '__main__':
     app.run('0.0.0.0', port=80, debug=True)
