@@ -4,6 +4,7 @@
 <head>
   <script src="/static/d3.v3.js"></script>
   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+  <script src="/static/jquery-1.10.2.min.js"></script>
 </head>
 <body>
   <script>
@@ -13,6 +14,9 @@
         alert('This user does not exist');
       } else {
         data = snapshot.val();
+        $.each(data, function(key,value) {
+          $("body").append('<div><a href="{{ username}}/' + key + '">' + key + '</a></div>');
+        });
       }
     });
   </script>
