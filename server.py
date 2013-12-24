@@ -17,10 +17,16 @@ base = firebase.FirebaseApplication('https://hivemind-plus.firebaseio.com', None
 def index():
     return render_template('index.html')
 
-@app.route('/user/<username>')
+@app.route('/<username>')
 def user(username):
     return render_template('user.html', username=username)
 
+@app.route('/<username>/<aggregator>')
+def aggregator(username, aggregator):
+    return render_template('aggregator.html', aggregator=aggregator, username=username)
+    
 # Main
 if __name__ == '__main__':
     app.run('0.0.0.0', port=80, debug=True)
+
+

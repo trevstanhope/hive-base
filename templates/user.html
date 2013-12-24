@@ -1,3 +1,18 @@
 <!doctype html>
-<title>Hello from Flask</title>
-<h1>Hello {{ username }}!</h1>
+<title>{{ username }}</title>
+<head>
+  <script src="/static/d3.v3.js"></script>
+  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+</head>
+<body>
+  <script>
+    var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
+    agg.on('value', function(snapshot) {
+      if(snapshot.val() === null) {
+        alert('This user does not exist');
+      } else {
+        data = snapshot.val();
+      }
+    });
+  </script>
+</body>
