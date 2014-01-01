@@ -101,7 +101,7 @@ agg.on('value', function(snapshot) {
       .enter()
       .append("circle")
       .attr("class", "dot")
-      .attr("r", 3.5)
+      .attr("r", 0.5)
       .attr("cx", function(d) { return x(d.time); })
       .attr("cy", function(d) { return y(d.decibels); })
       .style("fill", function(d) { return color(d.node); });
