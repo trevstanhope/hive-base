@@ -16,7 +16,7 @@ body {
 <body>
   <script>
     var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
-    agg.on('value', function(snapshot) {
+    agg.on('child_added', function(snapshot) {
       if(snapshot.val() === null) {
         alert('This user does not exist');
       } else {
