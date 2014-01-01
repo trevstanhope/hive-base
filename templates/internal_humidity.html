@@ -65,14 +65,14 @@ agg.on('value', function(snapshot) {
     console.log(data);
     data.forEach(function(d) {
       d.time = parseDate(d.time)
-      if (isNaN(d.internal_humidity)) {
-        d.internal_humidity = +0;
+      if (isNaN(d.Internal_RH)) {
+        d.Internal_RH = +0;
       } else {
-        d.internal_humidity = +d.internal_humidity;
+        d.Internal_RH = +d.Internal_RH;
       }
     });
     x.domain(d3.extent(data, function(d) { return d.time; })).nice();
-    y.domain(d3.extent(data, function(d) { return d.internal_humidity; })).nice();
+    y.domain(d3.extent(data, function(d) { return d.Internal_RH; })).nice();
 
     svg.append("g")
       .attr("class", "x axis")

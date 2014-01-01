@@ -65,14 +65,14 @@ agg.on('value', function(snapshot) {
     console.log(data);
     data.forEach(function(d) {
       d.time = parseDate(d.time)
-      if (isNaN(d.internal_temp)) {
-        d.internal_temp = +0;
+      if (isNaN(d.Internal_C)) {
+        d.Internal_C = +0;
       } else {
-        d.internal_temp = +d.internal_temp;
+        d.Internal_C = +d.Internal_C;
       }
     });
     x.domain(d3.extent(data, function(d) { return d.time; })).nice();
-    y.domain(d3.extent(data, function(d) { return d.internal_temp; })).nice();
+    y.domain(d3.extent(data, function(d) { return d.Internal_C; })).nice();
 
     svg.append("g")
       .attr("class", "x axis")
@@ -103,7 +103,7 @@ agg.on('value', function(snapshot) {
       .attr("class", "dot")
       .attr("r", 3.5)
       .attr("cx", function(d) { return x(d.time); })
-      .attr("cy", function(d) { return y(d.internal_temp); })
+      .attr("cy", function(d) { return y(d.Internal_C); })
       .style("fill", function(d) { return color(d.node); });
 
     var legend = svg.selectAll(".legend")
