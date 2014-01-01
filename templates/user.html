@@ -16,10 +16,11 @@ body {
 <body>
   <script>
     var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
-    agg.on('child_added', function(snapshot) {
+    agg.on('value', function(snapshot) {
       if(snapshot.val() === null) {
         alert('This user does not exist');
       } else {
+        agg.off();
         data = snapshot.val();
         $.each(data, function(key,value) {
           $("body").append('<div><a href="{{ username}}/' + key + '">' + key + '</a></div>');
