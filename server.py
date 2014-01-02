@@ -20,7 +20,7 @@ def index():
 @app.route('/<username>')
 def user(username):
     return render_template('user.html',
-        username=usernam
+        username=username
     )
 
 @app.route('/<username>/<aggregator>')
