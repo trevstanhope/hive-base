@@ -19,35 +19,24 @@ def index():
 
 @app.route('/<username>')
 def user(username):
-    return render_template('user.html', username=username)
+    return render_template('user.html',
+        username=usernam
+    )
 
 @app.route('/<username>/<aggregator>')
 def aggregator(username, aggregator):
-    return render_template('aggregator.html', aggregator=aggregator, username=username)
+    return render_template('aggregator.html',
+	    aggregator=aggregator,
+	    username=username
+    )
 
-@app.route('/<username>/<aggregator>/internal_temp')
-def internal_temp(username, aggregator):
-    return render_template('internal_temp.html', aggregator=aggregator, username=username)
-
-@app.route('/<username>/<aggregator>/external_temp')
-def external_temp(username, aggregator):
-    return render_template('external_temp.html', aggregator=aggregator, username=username)
-
-@app.route('/<username>/<aggregator>/internal_humidity')
-def internal_humidity(username, aggregator):
-    return render_template('internal_humidity.html', aggregator=aggregator, username=username)
-
-@app.route('/<username>/<aggregator>/external_humidity')
-def external_humidity(username, aggregator):
-    return render_template('external_humidity.html', aggregator=aggregator, username=username)
-
-@app.route('/<username>/<aggregator>/frequency')
-def frequency(username, aggregator):
-    return render_template('frequency.html', aggregator=aggregator, username=username)
-
-@app.route('/<username>/<aggregator>/amplitude')
-def amplitude(username, aggregator):
-    return render_template('amplitude.html', aggregator=aggregator, username=username)
+@app.route('/<username>/<aggregator>/<graph>')
+def graph(username, aggregator, graph):
+    return render_template('graph.html',
+	    aggregator=aggregator,
+	    username=username,
+        graph=graph
+    )
 
 @app.errorhandler(404)
 def page_not_found(error):

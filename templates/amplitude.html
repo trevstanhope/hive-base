@@ -31,6 +31,7 @@ body {
 <script src="https://cdn.firebase.com/v0/firebase.js"></script>
 </head>
 <body>
+<p><a href="/">home</a> > <a href="../../{{username}}">{{ username }}</a> > <a href="../../{{username}}/{{aggregator}}">{{aggregator}}</a> > {{graph}}</p>
 <script>
 <!-- Amplitude -->
 (function() {
@@ -77,14 +78,14 @@ agg.on('value', function(snapshot) {
     console.log(data);
     data.forEach(function(d) {
       d.time = parseDate(d.time)
-      if (isNaN(d.decibels)) {
-        d.decibels = +0;
+      if (isNaN(d.{{thing}})) {
+        d.{{thing}} = +0;
       } else {
-        d.decibels = +d.decibels;
+        d.{{thing}} = +d.{{thing}};
       }
     });
     x.domain(d3.extent(data, function(d) { return d.time; })).nice();
-    y.domain(d3.extent(data, function(d) { return d.decibels; })).nice();
+    y.domain(d3.extent(data, function(d) { return d.{{thing}}; })).nice();
 
     svg.append("g")
       .attr("class", "x axis")
@@ -115,7 +116,7 @@ agg.on('value', function(snapshot) {
       .attr("class", "dot")
       .attr("r", 1.0)
       .attr("cx", function(d) { return x(d.time); })
-      .attr("cy", function(d) { return y(d.decibels); })
+      .attr("cy", function(d) { return y(d.{{thing}}); })
       .style("fill", function(d) { return color(d.node); })
       .on("mouseover", function(d) {
           tooltip.transition()

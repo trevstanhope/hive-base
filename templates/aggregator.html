@@ -24,7 +24,8 @@ body {
 <script src="https://cdn.firebase.com/v0/firebase.js"></script>
 </head>
 <body>
-<p> {{ aggregator }}'s charts:
+<p><a href="/">home</a> > <a href="../{{ username }}">{{ username }}</a> > {{aggregator}}</p>
+<p> {{ aggregator }}'s charts: </p>
 <script>
 var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{username }}/{{ aggregator }}');
 
@@ -37,10 +38,10 @@ agg.on('value', function(snapshot) {
   }
 });
 </script>
-<p><a href="{{ aggregator }}/internal_temp">Internal Temperature</a></p>
-<p><a href="{{ aggregator }}/external_temp">External Temperature</a></p>
-<p><a href="{{ aggregator }}/internal_humidity">Internal Humidity</a></p>
-<p><a href="{{ aggregator }}/external_humidity">External Humidity</a></p>
+<p><a href="{{ aggregator }}/internal_C">Internal Temperature</a></p>
+<p><a href="{{ aggregator }}/external_C">External Temperature</a></p>
+<p><a href="{{ aggregator }}/internal_RH">Internal Humidity</a></p>
+<p><a href="{{ aggregator }}/external_RH">External Humidity</a></p>
 <p><a href="{{ aggregator }}/frequency">Frequency</a></p>
-<p><a href="{{ aggregator }}/amplitude">Amplitude</a></p>
+<p><a href="{{ aggregator }}/decibels">Amplitude</a></p>
 </body>
