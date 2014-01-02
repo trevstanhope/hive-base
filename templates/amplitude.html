@@ -19,6 +19,13 @@ body {
   stroke: #000;
 }
 
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+
 </style>
 <script src="/static/d3.v3.js"></script>
 <script src="https://cdn.firebase.com/v0/firebase.js"></script>
@@ -40,6 +47,11 @@ var y = d3.scale.linear()
     .range([height, 0]);
 
 var color = d3.scale.category10();
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -104,7 +116,28 @@ agg.on('value', function(snapshot) {
       .attr("r", 1.0)
       .attr("cx", function(d) { return x(d.time); })
       .attr("cy", function(d) { return y(d.decibels); })
-      .style("fill", function(d) { return color(d.node); });
+      .style("fill", function(d) { return color(d.node); })
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["node"])
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 5) + "px");
+      })
+      .on("click", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["node"])
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 5) + "px");
+      })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);
+      });
 
     var legend = svg.selectAll(".legend")
       .data(color.domain())

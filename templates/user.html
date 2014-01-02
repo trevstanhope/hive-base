@@ -14,6 +14,7 @@ body {
 <script src="/static/jquery-1.10.2.min.js"></script>
 </head>
 <body>
+  <p> {{ username }}'s aggregators:
   <script>
     var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
     agg.on('value', function(snapshot) {
@@ -23,7 +24,7 @@ body {
         agg.off();
         data = snapshot.val();
         $.each(data, function(key,value) {
-          $("body").append('<div><a href="{{ username}}/' + key + '">' + key + '</a></div>');
+          $("body").append('<p><a href="{{ username}}/' + key + '">' + key + '</a></p>');
         });
       }
     });
