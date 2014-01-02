@@ -126,7 +126,7 @@ agg.on('value', function(snapshot) {
                .duration(200)
                .style("opacity", .9);
           tooltip.html(d["node"])
-               .style("left", (d3.event.pageX + 5) + "px")
+               .style("left", (d3.event.pageX + 20) + "px")
                .style("top", (d3.event.pageY - 5) + "px");
       })
       .on("mouseout", function(d) {
