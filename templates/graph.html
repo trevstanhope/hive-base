@@ -25,15 +25,18 @@ body {
 </style>
 <script src="/static/d3.v3.js"></script>
 <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="/static/jquery-1.10.2.min.js"></script>
 </head>
 <body>
 <p><a href="/">home</a> > <a href="../../{{username}}">{{username}}</a> > <a href="../../{{username}}/{{aggregator}}">{{aggregator}}</a> > {{graph}}</p>
 <script>
 <!-- Graph -->
 (function() {
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+
+
+var margin = {top: 20, right: 20, bottom: 40, left: 40},
+    width = $(window).width() - margin.left - margin.right - 40,
+    height = $(window).height() - margin.top - margin.bottom - 66;
 
 var parseDate = d3.time.format("%Y-%M-%d-%H-%M-%S").parse;
 
