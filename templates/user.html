@@ -10,15 +10,26 @@
     </head>
     <body>
         <script>
+            var diameter = 960,
+                format = d3.format(",d"),
+                color = d3.scale.category20c();
+            var bubble = d3.layout.pack()
+                .sort(null)
+                .size([diameter, diameter])
+                .padding(1.5);
+            var svg = d3.select("body").append("svg")
+                .attr("width", diameter)
+                .attr("height", diameter)
+                .attr("class", "bubble");
             var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
-                agg.on('value', function(snapshot) {
-                    if(snapshot.val() === null) {
-                        alert('{{ username }} does not exist');
-                    } else {
-                        $("body").append('<p>{{ username }}s aggregators: </p>');
-                        agg.off();
-                        data = snapshot.val();
-                        $.each(data, function(key,value) {
+            agg.on('value', function(snapshot) {
+                if(snapshot.val() === null) {
+                    alert('{{ username }} does not exist');
+                } else {
+                    $("body").append('<p>{{ username }}s aggregators: </p>');
+                    agg.off();
+                    data = snapshot.val();
+                    $.each(data, function(key,value) {
                         $("body").append('<p><a href="{{ username}}/' + key + '">' + key + '</a></p>');
                     });
                 }

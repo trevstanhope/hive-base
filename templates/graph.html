@@ -1,60 +1,30 @@
 <!doctype html>
 <title>{{aggregator}}</title>
 <head>
-<link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.tooltip {
-  position: absolute;
-  width: 200px;
-  height: 28px;
-  pointer-events: none;
-}
-
-</style>
-<script src="/static/d3.v3.js"></script>
-<script src="https://cdn.firebase.com/v0/firebase.js"></script>
-<script src="/static/jquery-1.10.2.min.js"></script>
+    <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+    <link rel="stylesheet" type="text/css" href="static/graph.css">
+    <script src="/static/d3.v3.js"></script>
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+    <script src="/static/jquery-1.10.2.min.js"></script>
 </head>
 <body>
-<p><a href="/">home</a> > <a href="../../{{username}}">{{username}}</a> > <a href="../../{{username}}/{{aggregator}}">{{aggregator}}</a> > {{graph}}</p>
-<script>
-<!-- Graph -->
-(function() {
-
-
-var margin = {top: 20, right: 20, bottom: 40, left: 40},
-    width = $(window).width() - margin.left - margin.right - 40,
-    height = $(window).height() - margin.top - margin.bottom - 66;
-
-var parseDate = d3.time.format("%Y-%M-%d-%H-%M-%S").parse;
-
-var x = d3.time.scale()
-    .range([0, width]);
-
-var y = d3.scale.linear()
-    .range([height, 0]);
-
-var color = d3.scale.category10();
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+    <script>
+        (function() {
+            var margin = {top: 20, right: 20, bottom: 40, left: 40},
+                width = $(window).width() - margin.left - margin.right - 40,
+                height = $(window).height() - margin.top - margin.bottom - 66;
+            var parseDate = d3.time.format("%Y-%M-%d-%H-%M-%S").parse;
+            var x = d3.time.scale()
+                .range([0, width]);
+            var y = d3.scale.linear()
+                .range([height, 0]);
+            var color = d3.scale.category10();
+            var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
+            var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left");
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
