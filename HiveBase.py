@@ -8,6 +8,16 @@ Developed by Trevor Stanhope
 from flask import Flask, url_for, render_template
 from firebase import firebase, jsonutil
 
+# OAuth
+twitter = oauth.remote_app('twitter',
+    base_url='https://api.twitter.com/1/',
+    request_token_url='https://api.twitter.com/oauth/request_token',
+    access_token_url='https://api.twitter.com/oauth/access_token',
+    authorize_url='https://api.twitter.com/oauth/authenticate',
+    consumer_key='NQq1xm5OoL84mPAIoy3iFw',
+    consumer_secret='7d3ED8qT3I40PTEP4uyLyGhecnqD56w579FmSnSY'
+)
+
 # Global Objects
 app = Flask(__name__)
 base = firebase.FirebaseApplication('https://hivemind-plus.firebaseio.com', None)
