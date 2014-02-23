@@ -1,33 +1,28 @@
 <!doctype html>
-<title>{{ username }}</title>
-<link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
-<head>
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-</style>
-<script src="/static/d3.v3.js"></script>
-<script src="https://cdn.firebase.com/v0/firebase.js"></script>
-<script src="/static/jquery-1.10.2.min.js"></script>
-</head>
-<body>
-  <p><a href="/">Home</a> > {{ username }}</p>
-  <script>
-    var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
-    agg.on('value', function(snapshot) {
-      if(snapshot.val() === null) {
-        alert('{{ username }} does not exist');
-      } else {
-        $("body").append('<p>{{ username }}s aggregators: </p>');
-        agg.off();
-        data = snapshot.val();
-        $.each(data, function(key,value) {
-          $("body").append('<p><a href="{{ username}}/' + key + '">' + key + '</a></p>');
-        });
-      }
-    });
-  </script>
-</body>
+<html>
+    <head>
+        <title>{{ username }}</title>
+        <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+        <link rel="stylesheet" type="text/css" href="static/user.css">
+        <script src="/static/d3.v3.js"></script>
+        <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+        <script src="/static/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <script>
+            var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
+                agg.on('value', function(snapshot) {
+                    if(snapshot.val() === null) {
+                        alert('{{ username }} does not exist');
+                    } else {
+                        $("body").append('<p>{{ username }}s aggregators: </p>');
+                        agg.off();
+                        data = snapshot.val();
+                        $.each(data, function(key,value) {
+                        $("body").append('<p><a href="{{ username}}/' + key + '">' + key + '</a></p>');
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
