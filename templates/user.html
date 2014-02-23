@@ -14,14 +14,14 @@ body {
 <script src="/static/jquery-1.10.2.min.js"></script>
 </head>
 <body>
-  <p><a href="/">home</a> > {{ username }}</p>
-  <p>{{ username }}'s aggregators: </p>
+  <p><a href="/">Home</a> > {{ username }}</p>
   <script>
     var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
     agg.on('value', function(snapshot) {
       if(snapshot.val() === null) {
-        alert('This user does not exist');
+        alert('{{ username }} does not exist');
       } else {
+        $("body").append('<p>{{ username }}s aggregators: </p>');
         agg.off();
         data = snapshot.val();
         $.each(data, function(key,value) {
