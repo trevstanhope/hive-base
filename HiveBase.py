@@ -7,8 +7,10 @@ Developed by Trevor Stanhope
 # Libraries
 from flask import Flask, url_for, render_template
 from firebase import firebase, jsonutil
+from flask_oauth import OAuth
 
 # OAuth
+oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
     request_token_url='https://api.twitter.com/oauth/request_token',
