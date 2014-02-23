@@ -8,6 +8,8 @@ Developed by Trevor Stanhope
 from flask import Flask, url_for, render_template, request
 from firebase import firebase, jsonutil
 from flask_oauth import OAuth
+from flask import redirect
+from flask import session
 
 # OAuth
 oauth = OAuth()
@@ -24,11 +26,34 @@ twitter = oauth.remote_app('twitter',
 app = Flask(__name__)
 base = firebase.FirebaseApplication('https://hivemind-plus.firebaseio.com', None)
 
+# Twitter Getter
+@twitter.tokengetter
+def get_twitter_token(token=None):
+    return session.get('twitter_token')
+
 # Login
 @app.route('/login')
 def login():
     return twitter.authorize(callback=url_for('oauth_authorized',
         next=request.args.get('next') or request.referrer or None))
+
+# Authorized
+@app.route('/oauth-authorized')
+@twitter.authorized_handler
+def oauth_authorized(resp):
+    next_url = request.args.get('next') or url_for('index')
+    if resp is None:
+        flash(u'You denied the request to sign in.')
+        return redirect(next_url)
+
+    session['twitter_token'] = (
+        resp['oauth_token'],
+        resp['oauth_token_secret']
+    )
+    session['twitter_user'] = resp['screen_name']
+
+    flash('You were signed in as %s' % resp['screen_name'])
+    return redirect(next_url)
 
 # Index
 @app.route('/')
