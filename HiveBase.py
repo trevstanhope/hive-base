@@ -24,6 +24,12 @@ twitter = oauth.remote_app('twitter',
 app = Flask(__name__)
 base = firebase.FirebaseApplication('https://hivemind-plus.firebaseio.com', None)
 
+# Login
+@app.route('/login')
+def login():
+    return twitter.authorize(callback=url_for('oauth_authorized',
+        next=request.args.get('next') or request.referrer or None))
+
 # Index
 @app.route('/')
 def index():
