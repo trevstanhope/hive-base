@@ -54,7 +54,7 @@ def oauth_authorized(resp):
         )
         session['twitter_user'] = resp['screen_name']
         for field in session:
-            print('--> ' + str(ession[field]))
+            print('--> ' + str(session[field]))
         return redirect(url_for(session['twitter_user']))
 
 # Index
