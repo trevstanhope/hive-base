@@ -64,10 +64,7 @@ def oauth_authorized(resp):
             resp['oauth_token_secret']
         )
         session['twitter_user'] = resp['screen_name']
-        for field in session:
-            print('--> ' + str(session[field]))
-        print url_for(session['twitter_user'])
-        return redirect(url_for(session['twitter_user']))
+        return redirect(session['twitter_user'])
 
 # User
 @app.route('/<username>')
