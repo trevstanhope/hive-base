@@ -1,24 +1,30 @@
 #!/usr/bin/env python
 """
-HiveBase
+HiveFeed
 Developed by Trevor Stanhope
-Flask server for hosting distributed node-aggregator hive monitors.
+Mobile web-app Flask server for monitoring distributed hives hive monitors.
 """
 # Constants
-FIREBASE = 'https://hivemind-plus.firebaseio.com'
-SECRET_KEY = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-TWITTER_KEY = '534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing'
-TWITTER_SECRET = '534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing'
+FLASK_IP = '0.0.0.0'
+FLASK_PORT = 5000
+FIREBASE = 'https://hivemind.firebaseio.com'
 
 # Libraries
+import json
 from flask import Flask, url_for, render_template, request, redirect, session
-from firebase import firebase, jsonutil
 from flask_oauth import OAuth
+
+# API Keys
+with open('api_keys.json', 'r') as keyfile:
+    keys = json.loads(keyfile.read())
+    FIREBASE = keys['FIREBASE']
+    FLASK_SECRET = keys['FLASK_SECRET']
+    TWITTER_KEY = keys['TWITTER_KEY']
+    TWITTER_SECRET = keys['TWITTER_SECRET']
 
 # Global Objects
 app = Flask(__name__)
-app.secret_key = SECRET_KEY
-base = firebase.FirebaseApplication(FIREBASE, None) #UNUSED
+app.secret_key = FLASK_SECRET
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -91,5 +97,5 @@ def page_not_found(error):
 
 # Run Server
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run(FLASK_IP, port=FLASK_PORT, debug=True)
 
