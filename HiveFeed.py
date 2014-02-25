@@ -40,6 +40,17 @@ twitter = oauth.remote_app('twitter',
 def get_twitter_token(token=None):
     return session.get('twitter_token')
 
+# Index
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Login 
+@app.route('/login')
+def login():
+    return twitter.authorize(callback=url_for('oauth_authorized',
+        next=(request.args.get('next') or request.referrer or None)))
+
 # OAuth
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
@@ -55,18 +66,8 @@ def oauth_authorized(resp):
         session['twitter_user'] = resp['screen_name']
         for field in session:
             print('--> ' + str(session[field]))
+        print url_for(session['twitter_user'])
         return redirect(url_for(session['twitter_user']))
-
-# Index
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-# Login 
-@app.route('/login')
-def login():
-    return twitter.authorize(callback=url_for('oauth_authorized',
-        next=(request.args.get('next') or request.referrer or None)))
 
 # User
 @app.route('/<username>')
