@@ -1,0 +1,6 @@
+{   
+    "FIREBASE" : "os.getenv('https://hivemind-plus.firebaseio.com'",
+    "FLASK_SECRET" : "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT",
+    "TWITTER_KEY" : "534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing",
+    "TWITTER_SECRET" : "534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing"
+}
