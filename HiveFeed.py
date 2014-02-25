@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 """
-HiveMind-Plus Server
+HiveBase
 Developed by Trevor Stanhope
+Flask server for hosting distributed node-aggregator hive monitors.
 """
+# Constants
+FIREBASE = 'https://hivemind-plus.firebaseio.com'
+SECRET_KEY = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+TWITTER_KEY = '534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing'
+TWITTER_SECRET = '534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing'
 
 # Libraries
 from flask import Flask, url_for, render_template, request, redirect, session
@@ -11,28 +17,22 @@ from flask_oauth import OAuth
 
 # Global Objects
 app = Flask(__name__)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-base = firebase.FirebaseApplication('https://hivemind-plus.firebaseio.com', None)
+app.secret_key = SECRET_KEY
+base = firebase.FirebaseApplication(FIREBASE, None) #UNUSED
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authorize',
-    consumer_key='7x3M6ZT9dbO6pr1zeiutg',
-    consumer_secret='534Mkp7RJZ5asaC9iURV6hGa89gQhQXUDuPo9Ing'
+    consumer_key=TWITTER_KEY,
+    consumer_secret=TWITTER_SECRET
 )
 
-# Getter
+# Twitter Session
 @twitter.tokengetter
 def get_twitter_token(token=None):
     return session.get('twitter_token')
-
-# Login
-@app.route('/login')
-def login():
-    return twitter.authorize(callback=url_for('oauth_authorized',
-        next=(request.args.get('next') or request.referrer or None)))
 
 # OAuth
 @app.route('/oauth_authorized')
@@ -53,6 +53,12 @@ def oauth_authorized(resp):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+# Login 
+@app.route('/login')
+def login():
+    return twitter.authorize(callback=url_for('oauth_authorized',
+        next=(request.args.get('next') or request.referrer or None)))
 
 # User
 @app.route('/<username>')
@@ -83,8 +89,7 @@ def graph(username, aggregator, graph):
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
-# Main
+# Run Server
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-
 
