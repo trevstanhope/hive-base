@@ -11,7 +11,7 @@ FIREBASE = 'https://hivemind.firebaseio.com'
 
 # Libraries
 import json
-from flask import Flask, url_for, render_template, request, redirect, session
+from flask import Flask, url_for, render_template, request, redirect, session, flash
 from flask_oauth import OAuth
 
 # API Keys
@@ -69,6 +69,15 @@ def oauth_authorized(resp):
 # User
 @app.route('/<username>')
 def user(username):
+
+    resp = twitter.post('statuses/update.json', data={
+        'status':   'The text we want to tweet'
+    })
+    if resp.status == 403:
+        flash('Your tweet was too long.')
+    else:
+        flash('Successfully tweeted your tweet (ID: #%s)' % resp.data['id'])
+
     return render_template('user.html',
         username=username
     )
