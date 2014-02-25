@@ -44,17 +44,18 @@ def get_twitter_token(token=None):
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    next_url = request.args.get('next') or url_for('index')
+    #next_url = request.args.get('next') or url_for('index')
     if resp is None:
-        return redirect(next_url)
+        return redirect(url_for('index')) #BADLOGIN
     else:
         session['twitter_token'] = (
             resp['oauth_token'],
             resp['oauth_token_secret']
         )
         session['twitter_user'] = resp['screen_name']
-        print('--> ' + session['twitter_user'])
-        return redirect(next_url)
+        for field in session:
+            print('--> ' + session[field])
+        return redirect(url_for(session['twitter_user'))
 
 # Index
 @app.route('/')
