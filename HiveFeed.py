@@ -76,7 +76,7 @@ def user(username):
     if resp.status == 403:
         flash('Your tweet was too long.')
     else:
-        flash('Successfully tweeted your tweet (ID: #%s)' % resp.data['id'])
+        flash('Successfully tweeted your tweet')
 
     return render_template('user.html',
         username=username
