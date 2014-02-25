@@ -53,6 +53,7 @@ def oauth_authorized(resp):
             resp['oauth_token_secret']
         )
         session['twitter_user'] = resp['screen_name']
+        print('--> ' + session['twitter_user'])
         return redirect(next_url)
 
 # Index
