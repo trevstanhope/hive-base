@@ -27,7 +27,7 @@ app = Flask(__name__)
 app.secret_key = FLASK_SECRET
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
-    base_url='https://api.twitter.com/1/',
+    base_url='https://api.twitter.com/1.1/', #API_V1.1
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authorize',
@@ -80,8 +80,10 @@ def user(username):
         print(str(resp.status) + ': Your tweet was too long.')
     elif resp.status == 401:
         print(str(resp.status) + ': Authorization error with Twitter.')
+    elif resp.status == 410:
+        print(str(resp.status) + ': Resource not found.')
     else:
-        print(str(resp.status) + ': Successfully tweeted your tweet')
+        print(str(resp.status) + ': Other')
 
     return render_template('user.html',
         username=username
