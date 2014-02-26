@@ -18,7 +18,7 @@
                     firebase.off();
                     user = snapshot.val();
                     $.each(user, function(key, value) {
-                        $("body").append(key + ':' + value);
+                        $("body").append('<p>' + key + ':' + value + '</p>');
                     });
                 }
             });
