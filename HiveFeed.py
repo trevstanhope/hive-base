@@ -9,6 +9,7 @@ FLASK_IP = '0.0.0.0'
 FLASK_PORT = 5000
 FIREBASE = 'hivemind'
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
+DEBUG = True
 
 # Libraries
 import json
@@ -67,7 +68,6 @@ def logout():
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    #next_url = request.args.get('next') or url_for('index')
     if resp is None:
         return redirect(url_for('index')) #BADLOGIN
     else:
@@ -87,7 +87,7 @@ def user(username):
     )
 
 # Tweet
-@app.route('/tweet/<log>')
+@app.route('/tweet/?log=<log>')
 def tweet(log):
     if not session.has_key('twitter_token'):
         return redirect(url_for('login', next=request.url))
@@ -130,4 +130,4 @@ def page_not_found(error):
 
 # Run Server
 if __name__ == '__main__':
-    app.run(FLASK_IP, port=FLASK_PORT, debug=True)
+    app.run(FLASK_IP, port=FLASK_PORT, debug=DEBUG)
