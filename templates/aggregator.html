@@ -16,7 +16,7 @@
                         alert('This aggregator does not exist');
                     } else {
                         aggregator = snapshot.val();
-                        $.each(user, function(key, value) {
+                        $.each(aggregator, function(key, value) {
                             $("center").append('<p><a href=http://hivemind.mobi/aggregator/' + key + '>' + value + '</a></p>');
                         });
                     }
