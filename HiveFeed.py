@@ -77,11 +77,11 @@ def user(username):
     })
 
     if resp.status == 403:
-        print('Your tweet was too long.')
+        print(str(resp.status) + ': Your tweet was too long.')
     elif resp.status == 401:
-        print('Authorization error with Twitter.')
+        print(str(resp.status) + ': Authorization error with Twitter.')
     else:
-        print('Successfully tweeted your tweet')
+        print(str(resp.status) + ': Successfully tweeted your tweet')
 
     return render_template('user.html',
         username=username
