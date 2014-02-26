@@ -87,11 +87,12 @@ def user(username):
     )
 
 # Tweet
-@app.route('/tweet', methods=['POST'])
+@app.route('/tweet?log=<log>')
 def tweet():
+
     if not session.has_key('twitter_token'):
         return redirect(url_for('login', next=request.url))
-    status = request.form['tweet']
+
     resp = twitter.post('statuses/update.json', data={
         'status':log # %23 is for hash tags
     })
