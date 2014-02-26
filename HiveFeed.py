@@ -19,7 +19,8 @@ import datetime
 # API Keys
 with open('api_keys.json', 'r') as keyfile:
     keys = json.loads(keyfile.read())
-    FIREBASE = keys['FIREBASE']
+    FIREBASE_KEY = keys['FIREBASE_KEY']
+    FIREBASE_SECRET = keys['FIREBASE_SECRET']
     FLASK_SECRET = keys['FLASK_SECRET']
     TWITTER_KEY = keys['TWITTER_KEY']
     TWITTER_SECRET = keys['TWITTER_SECRET']
