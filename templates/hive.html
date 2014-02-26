@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
     <head>
-        <title>{{ aggregator }}</title>
+        <title>{{ hive }}</title>
         <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
-        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='graph.css')}}>
+        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='hive.css')}}>
         <script src={{ url_for('static', filename='d3.v3.js')}}></script>
         <script src="https://cdn.firebase.com/v0/firebase.js"></script>
         <script src={{ url_for('static', filename='jquery-1.10.2.min.js')}}></script>
@@ -11,13 +11,13 @@
     <body>
         <center>
             <script>
-                var agg = new Firebase('https://{{ firebase }}.firebaseio.com/aggregator/{{ aggregator }}');
+                var agg = new Firebase('https://{{ firebase }}.firebaseio.com/hive/{{ hive }}');
                 agg.on('value', function(snapshot) {
                     if(snapshot.val() === null) {
                         alert('This aggregator does not exist');
                     } else {
-                        aggregator = snapshot.val();
-                        $.each(aggregator, function(key, value) {
+                        hive = snapshot.val();
+                        $.each(hive, function(key, value) {
                             $("center").append('<p><a href=http://hivemind.mobi/hive/' + key + '>' + value + '</a></p>');
                         });
                     }
