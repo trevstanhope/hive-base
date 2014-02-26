@@ -58,7 +58,7 @@ def login():
 
 # Logout 
 @app.route('/logout')
-def login():
+def logout():
     if session.has_key('twitter_token'):
         del session['twitter_token']
     return redirect(url_for('index'))
