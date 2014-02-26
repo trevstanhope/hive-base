@@ -10,6 +10,7 @@
     </head>
     <body>
         <script>
+            var agg = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}');
             var diameter = 960,
                 format = d3.format(",d"),
                 color = d3.scale.category20c();
@@ -21,16 +22,15 @@
                 .attr("width", diameter)
                 .attr("height", diameter)
                 .attr("class", "bubble");
-            var agg = new Firebase('https://{{ firebase }}.firebaseio.com/{{ username }}');
             agg.on('value', function(snapshot) {
                 if(snapshot.val() === null) {
                     alert('No data for {{ username }} exists');
                 } else {
-                    $("body").append('<p>{{ username }}s aggregators: </p>');
+                    $("body").append('<p>{{ username }} aggregators: </p>');
                     agg.off();
-                    data = snapshot.val();
-                    $.each(data, function(key,value) {
-                        $("body").append('<p><a href="{{ username}}/' + key + '">' + key + '</a></p>');
+                    user = snapshot.val();
+                    $.each(user, function(key, value) {
+                        $("body").append('<p><a href="{{ username }}/' + key + '">' + key + '</a></p>');
                     });
                 }
             });
