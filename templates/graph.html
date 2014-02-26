@@ -10,7 +10,7 @@
 <body>
     <script>
         (function() {
-            var agg = new Firebase('https://{{ firebase }}.firebaseio.com/{{ username }}/{{ aggregator }}');
+            var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/{{ username }}/{{ aggregator }}');
             var margin = {top: 20, right: 20, bottom: 40, left: 40},
                 width = $(window).width() - margin.left - margin.right - 40,
                 height = $(window).height() - margin.top - margin.bottom - 66;
@@ -34,7 +34,8 @@
             var tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
-            agg.on('value', function(snapshot) {
+
+            firebase.on('value', function(snapshot) {
                 if(snapshot.val() === null) {
                     alert('This aggregator does not exist');
                 } else {
