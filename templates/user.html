@@ -21,10 +21,10 @@
                 .attr("width", diameter)
                 .attr("height", diameter)
                 .attr("class", "bubble");
-            var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{ username }}');
+            var agg = new Firebase('https://{{ firebase }}.firebaseio.com/{{ username }}');
             agg.on('value', function(snapshot) {
                 if(snapshot.val() === null) {
-                    alert('{{ username }} does not exist');
+                    alert('No data for {{ username }} exists');
                 } else {
                     $("body").append('<p>{{ username }}s aggregators: </p>');
                     agg.off();
