@@ -89,18 +89,14 @@ def user(username):
 # Tweet
 @app.route('/tweet', methods=['POST'])
 def tweet():
-
     if not session.has_key('twitter_token'):
         return redirect(url_for('login', next=request.url))
-
-    log = request.form['log']
+    log = request.form['log'] # get ?log= from the post request
     if not log:
-        return redirect(url_for('index'))
-
+        return redirect('/user/' + session['twitter_user']) # refresh page if empty form entered
     resp = twitter.post('statuses/update.json', data={
         'status':log # %23 is for hash tags
     })
-
     if resp.status == 403:
         print(str(resp.status) + ': Your tweet was too long.')
     elif resp.status == 401:
