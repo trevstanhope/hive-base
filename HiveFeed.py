@@ -38,8 +38,6 @@ twitter = oauth.remote_app('twitter',
 # Twitter Session
 @twitter.tokengetter
 def get_twitter_token(token=None):
-    if session.has_key('twitter_token'):
-        del session['twitter_token']
     return session.get('twitter_token')
 
 # Index
@@ -50,6 +48,8 @@ def index():
 # Login 
 @app.route('/login')
 def login():
+    if session.has_key('twitter_token'):
+        del session['twitter_token']
     return twitter.authorize(callback=url_for('oauth_authorized',
         next=(request.args.get('next') or request.referrer or None)))
 
