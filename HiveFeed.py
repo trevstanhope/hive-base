@@ -7,7 +7,7 @@ Mobile web-app Flask server for monitoring distributed hives hive monitors.
 # Constants
 FLASK_IP = '0.0.0.0'
 FLASK_PORT = 5000
-FIREBASE = 'https://hivemind.firebaseio.com'
+FIREBASE = 'hivemind'
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 
 # Libraries
@@ -74,7 +74,8 @@ def oauth_authorized(resp):
 @app.route('/user/<username>')
 def user(username):
     return render_template('user.html',
-        username=username
+        username=username,
+        firebase=FIREBASE #FIREBASE
     )
 
 # Tweet
@@ -84,7 +85,7 @@ def tweet(log):
         return redirect(url_for('login', next=request.url))
 
     resp = twitter.post('statuses/update.json', data={
-        'status':log
+        'status':log # %23 is for hash tags
     })
     if resp.status == 403:
         print(str(resp.status) + ': Your tweet was too long.')
