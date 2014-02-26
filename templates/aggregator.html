@@ -1,47 +1,29 @@
 <!doctype html>
-<title>{{ aggregator }}</title>
 <head>
-<link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.dot {
-  stroke: #000;
-}
-
-</style>
-<script src="/static/d3.v3.js"></script>
-<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+    <title>{{ aggregator }}</title>
+    <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+    <link rel="stylesheet" type="text/css" href="static/graph.css">
+    <script src="/static/d3.v3.js"></script>
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
 </head>
 <body>
-<p><a href="/">home</a> > <a href="../{{ username }}">{{ username }}</a> > {{aggregator}}</p>
-<p> {{ aggregator }}'s charts: </p>
-<script>
-var agg = new Firebase('https://hivemind-plus.firebaseio.com/{{username }}/{{ aggregator }}');
+    <p> {{ aggregator }}'s charts: </p>
+    <script>
+        var agg = new Firebase('https://{{ firebase }}.firebaseio.com/{{ username }}/{{ aggregator }}');
 
-agg.on('value', function(snapshot) {
-  if(snapshot.val() === null) {
-    alert('This aggregator does not exist');
-  } else {
-    data = d3.values(snapshot.val());
-    console.log(data);
-  }
-});
-</script>
-<p><a href="{{ aggregator }}/Internal_C">Internal Temperature</a></p>
-<p><a href="{{ aggregator }}/External_C">External Temperature</a></p>
-<p><a href="{{ aggregator }}/Internal_RH">Internal Humidity</a></p>
-<p><a href="{{ aggregator }}/External_RH">External Humidity</a></p>
-<p><a href="{{ aggregator }}/frequency">Frequency</a></p>
-<p><a href="{{ aggregator }}/decibels">Amplitude</a></p>
+        agg.on('value', function(snapshot) {
+            if(snapshot.val() === null) {
+                alert('This aggregator does not exist');
+            } else {
+                data = d3.values(snapshot.val());
+                console.log(data);
+            }
+        });
+    </script>
+    <p><a href="{{ aggregator }}/Internal_C">Internal Temperature</a></p>
+    <p><a href="{{ aggregator }}/External_C">External Temperature</a></p>
+    <p><a href="{{ aggregator }}/Internal_RH">Internal Humidity</a></p>
+    <p><a href="{{ aggregator }}/External_RH">External Humidity</a></p>
+    <p><a href="{{ aggregator }}/frequency">Frequency</a></p>
+    <p><a href="{{ aggregator }}/decibels">Amplitude</a></p>
 </body>

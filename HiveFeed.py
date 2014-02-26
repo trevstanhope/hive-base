@@ -103,6 +103,7 @@ def aggregator(username, aggregator):
     return render_template('aggregator.html',
 	    aggregator=aggregator,
 	    username=username
+        firebase=FIREBASE,
     )
 
 # Graph
@@ -112,6 +113,7 @@ def graph(username, aggregator, graph):
 	    aggregator=aggregator,
 	    username=username,
         graph=graph
+        firebase=FIREBASE
     )
 
 # 404
