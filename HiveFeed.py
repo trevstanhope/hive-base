@@ -117,7 +117,7 @@ def aggregator(aggregator):
 
 # Hive
 @app.route('/hive/<hive>')
-def graph(hive):
+def hive(hive):
     return render_template('hive.html',
 	    hive=hive,
         firebase=FIREBASE
