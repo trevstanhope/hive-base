@@ -8,11 +8,13 @@ Mobile web-app Flask server for monitoring distributed hives hive monitors.
 FLASK_IP = '0.0.0.0'
 FLASK_PORT = 5000
 FIREBASE = 'https://hivemind.firebaseio.com'
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 
 # Libraries
 import json
 from flask import Flask, url_for, render_template, request, redirect, session, flash
 from flask_oauth import OAuth
+import datetime
 
 # API Keys
 with open('api_keys.json', 'r') as keyfile:
@@ -71,11 +73,16 @@ def oauth_authorized(resp):
 # User
 @app.route('/<username>')
 def user(username):
+    return render_template('user.html',
+        username=username
+    )
 
+# Tweet
+@app.route('/tweet/<log>')
+def tweet(log):
     resp = twitter.post('statuses/update.json', data={
-        'status':'I just logged into HiveMind'
+        'status':log
     })
-
     if resp.status == 403:
         print(str(resp.status) + ': Your tweet was too long.')
     elif resp.status == 401:
@@ -84,10 +91,7 @@ def user(username):
         print(str(resp.status) + ': Resource not found.')
     else:
         print(str(resp.status) + ': Other')
-
-    return render_template('user.html',
-        username=username
-    )
+    return redirect(session['twitter_user'])
 
 # Aggregator
 @app.route('/<username>/<aggregator>')
