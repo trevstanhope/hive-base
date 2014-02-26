@@ -38,6 +38,8 @@ twitter = oauth.remote_app('twitter',
 # Twitter Session
 @twitter.tokengetter
 def get_twitter_token(token=None):
+    if session.has_key('twitter_tokens'):
+        del session['twitter_tokens']
     return session.get('twitter_token')
 
 # Index
