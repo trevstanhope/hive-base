@@ -102,8 +102,8 @@ def tweet(log):
 def aggregator(username, aggregator):
     return render_template('aggregator.html',
 	    aggregator=aggregator,
-	    username=username
-        firebase=FIREBASE,
+	    username=username,
+        firebase=FIREBASE
     )
 
 # Graph
@@ -112,7 +112,7 @@ def graph(username, aggregator, graph):
     return render_template('graph.html',
 	    aggregator=aggregator,
 	    username=username,
-        graph=graph
+        graph=graph,
         firebase=FIREBASE
     )
 
