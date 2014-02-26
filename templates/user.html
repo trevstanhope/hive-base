@@ -9,6 +9,9 @@
         <script src={{ url_for('static', filename='jquery-1.10.2.min.js')}}></script>
     </head>
     <body>
+        <form name="something" action="#">
+            <input type="text" name="url" value="" onchange="goToPage(this.value)">
+        </form>
         <script>
             var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}');
             firebase.on('value', function(snapshot) {
@@ -22,6 +25,12 @@
                     });
                 }
             });
+
+            function goToPage(var url = '') {
+                var initial = "http://hivemind.mobi";
+                var extension = "html";
+                window.location(initial+url+extension);
+            }
         </script>
     </body>
 </html>
