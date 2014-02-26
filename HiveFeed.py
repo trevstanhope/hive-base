@@ -56,6 +56,13 @@ def login():
     return twitter.authorize(callback=url_for('oauth_authorized',
         next=(request.args.get('next') or request.referrer or None)))
 
+# Logout 
+@app.route('/logout')
+def login():
+    if session.has_key('twitter_token'):
+        del session['twitter_token']
+    return redirect(url_for('index'))
+
 # OAuth
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
@@ -69,7 +76,7 @@ def oauth_authorized(resp):
             resp['oauth_token_secret']
         )
         session['twitter_user'] = resp['screen_name']
-        return redirect('/user/' + session['twitter_user'])
+        return redirect(url_for('user', next=session['twitter_user']))
 
 # User
 @app.route('/user/<username>')
@@ -84,7 +91,6 @@ def user(username):
 def tweet(log):
     if not session.has_key('twitter_token'):
         return redirect(url_for('login', next=request.url))
-
     resp = twitter.post('statuses/update.json', data={
         'status':log # %23 is for hash tags
     })
@@ -96,7 +102,7 @@ def tweet(log):
         print(str(resp.status) + ': Resource not found.')
     else:
         print(str(resp.status) + ': Other')
-    return redirect('/user/' + session['twitter_user'])
+    return redirect(url_for('user', next=session['twitter_user']))
 
 # Aggregator
 @app.route('/user/<username>/<aggregator>')
