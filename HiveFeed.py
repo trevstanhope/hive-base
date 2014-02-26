@@ -57,7 +57,7 @@ def login():
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    #next_url = request.args.get('next') or url_for('index')
+    next_url = request.args.get('next') or url_for('index')
     if resp is None:
         return redirect(url_for('index')) #BADLOGIN
     else:
@@ -73,12 +73,15 @@ def oauth_authorized(resp):
 def user(username):
 
     resp = twitter.post('statuses/update.json', data={
-        'status':   'The text we want to tweet'
+        'status':'I just logged into HiveMind'
     })
+
     if resp.status == 403:
-        flash('Your tweet was too long.')
+        print('Your tweet was too long.')
+    elif resp.status == 401:
+        print('Authorization error with Twitter.')
     else:
-        flash('Successfully tweeted your tweet')
+        print('Successfully tweeted your tweet')
 
     return render_template('user.html',
         username=username
