@@ -11,37 +11,17 @@
     <body>
         <script>
             var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}');
-            var diameter = 960,
-                format = d3.format(",d"),
-                color = d3.scale.category20c();
-            var bubble = d3.layout.pack()
-                .sort(null)
-                .size([diameter, diameter])
-                .padding(1.5);
-            var svg = d3.select("body").append("svg")
-                .attr("width", diameter)
-                .attr("height", diameter)
-                .attr("class", "bubble");
             firebase.on('value', function(snapshot) {
                 if(snapshot.val() === null) {
                     alert('No data for {{ username }} exists');
                 } else {
                     firebase.off();
-                    user = d3.values(snapshot.val());
+                    user = snapshot.val();
+                    $.each(user, function(key, value) {
+                        $("body").append(key + ':' + value);
+                    });
                 }
             });
-        
-            // Returns a flattened hierarchy containing all leaf nodes under the root.
-            // http://bl.ocks.org/mbostock/4063269
-            function classes(root) {
-              var classes = [];
-              function recurse(name, node) {
-                if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-                else classes.push({packageName: name, className: node.name, value: node.size});
-              }
-              recurse(null, root);
-              return {children: classes};
-            }
         </script>
     </body>
 </html>
