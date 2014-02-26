@@ -59,7 +59,7 @@ def login():
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    next_url = request.args.get('next') or url_for('index')
+    #next_url = request.args.get('next') or url_for('index')
     if resp is None:
         return redirect(url_for('index')) #BADLOGIN
     else:
@@ -68,18 +68,22 @@ def oauth_authorized(resp):
             resp['oauth_token_secret']
         )
         session['twitter_user'] = resp['screen_name']
-        return redirect(session['twitter_user'])
+        return redirect('/user/' + session['twitter_user'])
 
 # User
-@app.route('/<username>')
+@app.route('/user/<username>')
 def user(username):
     return render_template('user.html',
         username=username
     )
 
 # Tweet
-@app.route('/tweet/<log>')
-def tweet(log):
+@app.route('/tweet')
+def tweet():
+    if not session.has_key('twitter_token'):
+        return redirect(url_for('login', next=request.url))
+
+    log = request.form['tweet']
     resp = twitter.post('statuses/update.json', data={
         'status':log
     })
@@ -91,10 +95,10 @@ def tweet(log):
         print(str(resp.status) + ': Resource not found.')
     else:
         print(str(resp.status) + ': Other')
-    return redirect(session['twitter_user'])
+    return redirect('/user/' + session['twitter_user'])
 
 # Aggregator
-@app.route('/<username>/<aggregator>')
+@app.route('/user/<username>/<aggregator>')
 def aggregator(username, aggregator):
     return render_template('aggregator.html',
 	    aggregator=aggregator,
@@ -102,7 +106,7 @@ def aggregator(username, aggregator):
     )
 
 # Graph
-@app.route('/<username>/<aggregator>/<graph>')
+@app.route('/user/<username>/<aggregator>/<graph>')
 def graph(username, aggregator, graph):
     return render_template('graph.html',
 	    aggregator=aggregator,
