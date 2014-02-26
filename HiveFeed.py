@@ -108,11 +108,10 @@ def tweet():
     return redirect('/user/' + session['twitter_user'])
 
 # Aggregator
-@app.route('/user/<username>/<aggregator>')
-def aggregator(username, aggregator):
+@app.route('/aggregator/<aggregator>')
+def aggregator(aggregator):
     return render_template('aggregator.html',
 	    aggregator=aggregator,
-	    username=username,
         firebase=FIREBASE
     )
 
