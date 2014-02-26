@@ -2,12 +2,12 @@
 <html>
     <head>
         <title>HiveMind&trade;</title>
-        <link rel="shortcut icon" href=/static/favicon.ico>
-        <link rel="stylesheet" type="text/css" href="static/index.css">
+        <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='index.css')}}>
     </head>
     <body>
         <center>
-            <img src="static/logo.png"></img>
+            <img src="/static/logo.png"></img>
             <p>Hivemind&trade;: Remote Monitoring for Beekeepers</p>
             <form action="/login">
                 <input type="submit" value="login" />
