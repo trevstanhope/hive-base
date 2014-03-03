@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ log }}</title>
+        <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='log.css')}}>
+        <script src={{ url_for('static', filename='d3.v3.js')}}></script>
+        <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+        <script src={{ url_for('static', filename='jquery-1.10.2.min.js')}}></script>
+    </head>
+    <body>
+        <center>
+            <script>
+                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/logs/{{ log }}/');
+                firebase.on('value', function(snapshot) {
+                    if(snapshot.val() === null) {
+                        alert('This aggregator does not exist');
+                    } else {
+                        log = snapshot.val();
+                        $.each(log, function(key, value) {
+                            $("center").append('<p>' + key + ' : ' + value + '</a></p>');
+                        });
+                    }
+                });
+            </script>
+        </center>
+    </body>
+</html>
