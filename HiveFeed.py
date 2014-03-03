@@ -131,6 +131,14 @@ def sample(sample):
         firebase=FIREBASE
     )
 
+# Log
+@app.route('/log/<log>')
+def log(log):
+    return render_template('log.html',
+	    log=log,
+        firebase=FIREBASE
+    )
+
 # Graph
 @app.route('/user/<username>/<aggregator>/<graph>')
 def graph(username, aggregator, graph):

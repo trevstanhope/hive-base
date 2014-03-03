@@ -15,21 +15,136 @@
                 <input type="submit" value="submit">
             </form>
             <script>
-                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/hives/{{ hive }}/samples');
-                firebase.on('value', function(snapshot) {
-                    if(snapshot.val() === null) {
-                        alert('This aggregator does not exist');
-                    } else {
-                        hive = snapshot.val();
-                        $.each(hive, function(key, value) {
-                            var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/' + value);
-                            firebase.once('value', function(snapshot) {
-                                sample = snapshot.val();
-                                $("center").append('<p><a href=/sample/' + value + '>' + sample.time + '</a></p>');
+                // List of Logs
+                (function() {
+                    var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/hives/{{ hive }}/logs');
+                    firebase.on('value', function(snapshot) {
+                        if(snapshot.val() === null) {
+                            alert('This aggregator does not exist');
+                        } else {
+                            logs = snapshot.val();
+                            $.each(logs, function(key, value) {
+                                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/logs/' + value);
+                                firebase.once('value', function(snapshot) {
+                                    log = snapshot.val();
+                                    $("center").append('<p><a href=/log/' + value + '>' + log.text + '</a></p>');
+                                });
                             });
-                        });
-                    }
-                });
+                        }
+                    });
+                })();
+
+                // Temperature Graph
+                (function() {
+                    var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/hives/{{ hive }}/samples');
+                    var margin = {top: 20, right: 20, bottom: 40, left: 40},
+                        width = $(window).width() - margin.left - margin.right - 40,
+                        height = $(window).height() - margin.top - margin.bottom - 66;
+                    var parseDate = d3.time.format("%Y-%M-%d-%H-%M-%S").parse;
+                    var x = d3.time.scale()
+                        .range([0, width]);
+                    var y = d3.scale.linear()
+                        .range([height, 0]);
+                    var color = d3.scale.category10();
+                    var xAxis = d3.svg.axis()
+                        .scale(x)
+                        .orient("bottom");
+                    var yAxis = d3.svg.axis()
+                        .scale(y)
+                        .orient("left");
+                    var svg = d3.select("center").append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    var tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+                    firebase.on('value', function(snapshot) {
+                        if(snapshot.val() === null) {
+                            alert('This aggregator does not exist');
+                        } else {
+                            samples = snapshot.val(); // the sample ids
+                            var sample_data = [];
+                            $.each(samples, function(key, value) {
+                                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/' + value);
+                                firebase.on('value', function(snapshot) {
+
+                                    // Build JSON of JSONs here!!
+                                    sample = snapshot.val();
+                                    sample_data.push({
+                                        date: sample.date,
+                                        temperature: sample.temperature
+                                    }); console.log(sample_data);
+                                    data = d3.values(sample_data);
+
+                                    // D3 render this data
+                                    data.forEach(function(d) {
+                                        d.time = parseDate(d.date)
+                                        if (isNaN(d.temperature)) {
+                                            d.temperature = +0;
+                                        } else {
+                                            d.temperature = +d.temperature;
+                                        }
+                                    });
+                                    x.domain(d3.extent(data, function(d) { return d.time; }));
+                                    y.domain(d3.extent(data, function(d) { return d.temperature; }));
+                                    svg.append("g")
+                                        .attr("class", "x axis")
+                                        .attr("transform", "translate(0," + height + ")")
+                                        .call(xAxis)
+                                        .append("text")
+                                        .attr("class", "label")
+                                        .attr("x", width)
+                                        .attr("y", -6)
+                                        .style("text-anchor", "end")
+                                        .text("Time");
+                                    svg.append("g")
+                                        .attr("class", "y axis")
+                                        .call(yAxis)
+                                        .append("text")
+                                        .attr("class", "label")
+                                        .attr("transform", "rotate(-90)")
+                                        .attr("y", 6)
+                                        .attr("dy", ".71em")
+                                        .style("text-anchor", "end")
+                                        .text("temperature")
+                                    svg.selectAll(".dot")
+                                        .data(data)
+                                        .enter()
+                                        .append("circle")
+                                        .attr("class", "dot")
+                                        .attr("r", 1.0)
+                                        .attr("cx", function(d) { return x(d.time); })
+                                        .attr("cy", function(d) { return y(d.temperature); })
+                                        .style("fill", function(d) { return color(d.node); })
+                                        .style("stroke", function(d) { return color(d.node); })
+                                        .on("mouseover", function(d) {
+                                            tooltip.transition()
+                                                .duration(200)
+                                                .style("opacity", .9);
+                                            tooltip.html(d["node"])
+                                                .style("left", (d3.event.pageX + 20) + "px")
+                                                .style("top", (d3.event.pageY - 5) + "px");
+                                        })
+                                        .on("click", function(d) {
+                                            tooltip.transition()
+                                                .duration(200)
+                                                .style("opacity", .9);
+                                            tooltip.html(d["node"])
+                                                .style("left", (d3.event.pageX + 20) + "px")
+                                                .style("top", (d3.event.pageY - 5) + "px");
+                                        })
+                                        .on("mouseout", function(d) {
+                                            tooltip.transition()
+                                                .duration(500)
+                                                .style("opacity", 0);
+                                        });
+                                });
+                            });
+                        }
+                    });
+                })();
             </script>
         </center>
     </body>
