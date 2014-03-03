@@ -11,7 +11,7 @@
     <body>
         <center>
             <script>
-                var agg = new Firebase('https://{{ firebase }}.firebaseio.com/aggregator/{{ aggregator }}');
+                var agg = new Firebase('https://{{ firebase }}.firebaseio.com/aggregators/{{ aggregator }}');
                 agg.on('value', function(snapshot) {
                     if(snapshot.val() === null) {
                         alert('This aggregator does not exist');
