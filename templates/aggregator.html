@@ -11,14 +11,14 @@
     <body>
         <center>
             <script>
-                var agg = new Firebase('https://{{ firebase }}.firebaseio.com/aggregators/{{ aggregator }}');
-                agg.on('value', function(snapshot) {
+                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/aggregators/{{ aggregator }}/hives');
+                firebase.on('value', function(snapshot) {
                     if(snapshot.val() === null) {
                         alert('This aggregator does not exist');
                     } else {
                         aggregator = snapshot.val();
                         $.each(aggregator, function(key, value) {
-                            $("center").append('<p><a href=http://hivemind.mobi/hive/' + key + '>' + value + '</a></p>');
+                            $("center").append('<p><a href=/hive/' + value + '>' + key + '</a></p>');
                         });
                     }
                 });

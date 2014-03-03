@@ -123,6 +123,14 @@ def hive(hive):
         firebase=FIREBASE
     )
 
+# Sample
+@app.route('/sample/<sample>')
+def hive(hive):
+    return render_template('sample.html',
+	    hive=hive,
+        firebase=FIREBASE
+    )
+
 # Graph
 @app.route('/user/<username>/<aggregator>/<graph>')
 def graph(username, aggregator, graph):

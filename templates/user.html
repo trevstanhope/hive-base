@@ -15,14 +15,14 @@
                 <input type="submit" value="submit">
             </form>
             <script>
-                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}');
+                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}/aggregators');
                 firebase.on('value', function(snapshot) {
                     if(snapshot.val() === null) {
                         alert('No data for {{ username }} exists');
                     } else {
                         user = snapshot.val();
                         $.each(user, function(key, value) {
-                            $("center").append('<p><a href=http://hivemind.mobi/aggregator/' + key + '>' + value + '</a></p>');
+                            $("center").append('<p><a href=/aggregator/' + value + '>' + key + '</a></p>');
                         });
                     }
                 });
