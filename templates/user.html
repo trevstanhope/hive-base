@@ -15,7 +15,7 @@
                 <input type="submit" value="submit">
             </form>
             <script>
-                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/user/{{ username }}');
+                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}');
                 firebase.on('value', function(snapshot) {
                     if(snapshot.val() === null) {
                         alert('No data for {{ username }} exists');
