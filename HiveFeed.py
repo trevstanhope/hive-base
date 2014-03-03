@@ -125,9 +125,9 @@ def hive(hive):
 
 # Sample
 @app.route('/sample/<sample>')
-def hive(hive):
+def sample(hive):
     return render_template('sample.html',
-	    hive=hive,
+	    sample=sample,
         firebase=FIREBASE
     )
 
