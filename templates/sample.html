@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ sample }}</title>
+        <link rel="shortcut icon" href={{ url_for('static',filename='favicon.ico')}}>
+        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='sample.css')}}>
+        <script src={{ url_for('static', filename='d3.v3.js')}}></script>
+        <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+        <script src={{ url_for('static', filename='jquery-1.10.2.min.js')}}></script>
+    </head>
+    <body>
+        <center>
+            <script>
+                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/{{ sample }}/');
+                firebase.on('value', function(snapshot) {
+                    if(snapshot.val() === null) {
+                        alert('This aggregator does not exist');
+                    } else {
+                        hive = snapshot.val();
+                        $.each(hive, function(key, value) {
+                            $("center").append('<p><a href=/sample/' + value + '>' + key + '</a></p>');
+                        });
+                    }
+                });
+            </script>
+        </center>
+    </body>
+</html>
