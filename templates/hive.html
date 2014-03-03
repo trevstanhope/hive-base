@@ -27,7 +27,7 @@
                                 var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/logs/' + value);
                                 firebase.once('value', function(snapshot) {
                                     log = snapshot.val();
-                                    $("center").append('<p><a href=/log/' + value + '>' + log.text + '</a></p>');
+                                    $("center").append('<p><a href=/log/' + value + '>' + log.date + '</a> ' + log.text + '</p>');
                                 });
                             });
                         }

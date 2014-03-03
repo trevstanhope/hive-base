@@ -8,6 +8,7 @@ Mobile web-app Flask server for monitoring distributed hives hive monitors.
 FLASK_IP = '0.0.0.0'
 FLASK_PORT = 5000
 FIREBASE = 'hivemind'
+FIREBASE_ADDR = 'https://' + FIREBASE + '.firebaseio.com'
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 DEBUG = True
 
@@ -15,6 +16,7 @@ DEBUG = True
 import json
 from flask import Flask, url_for, render_template, request, redirect, session, flash
 from flask_oauth import OAuth
+from firebase import firebase
 import datetime
 
 # API Keys
@@ -29,6 +31,7 @@ with open('api_keys.json', 'r') as keyfile:
 # Global Objects
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET
+firebase = firebase.FirebaseApplication(FIREBASE_ADDR, None)
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1.1/', #API_V1.1
