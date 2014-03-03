@@ -16,9 +16,9 @@
                     if(snapshot.val() === null) {
                         alert('This aggregator does not exist');
                     } else {
-                        hive = snapshot.val();
-                        $.each(hive, function(key, value) {
-                            $("center").append('<p><a href=/sample/' + value + '>' + key + '</a></p>');
+                        sample = snapshot.val();
+                        $.each(sample, function(key, value) {
+                            $("center").append('<p>' + key + ' : ' + value + '</a></p>');
                         });
                     }
                 });

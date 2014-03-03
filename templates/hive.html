@@ -10,6 +10,10 @@
     </head>
     <body>
         <center>
+            <form action="http://hivemind.mobi/tweet" method="post">
+                <input type="log" name="log" value="#{{hive}}">
+                <input type="submit" value="submit">
+            </form>
             <script>
                 var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/hives/{{ hive }}/samples');
                 firebase.on('value', function(snapshot) {
@@ -18,7 +22,11 @@
                     } else {
                         hive = snapshot.val();
                         $.each(hive, function(key, value) {
-                            $("center").append('<p><a href=/sample/' + value + '>' + key + '</a></p>');
+                            var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/' + value);
+                            firebase.once('value', function(snapshot) {
+                                sample = snapshot.val();
+                                $("center").append('<p><a href=/sample/' + value + '>' + sample.time + '</a></p>');
+                            });
                         });
                     }
                 });
