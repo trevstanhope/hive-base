@@ -3,6 +3,10 @@
 HiveFeed
 Developed by Trevor Stanhope
 Mobile web-app Flask server for monitoring distributed hives hive monitors.
+
+TODO:
+- update firebase log on tweet
+- proper redirect on tweet
 """
 # Constants
 FLASK_IP = '0.0.0.0'
