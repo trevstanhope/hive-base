@@ -20,7 +20,7 @@
                     var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/hives/{{ hive }}/logs');
                     firebase.on('value', function(snapshot) {
                         if(snapshot.val() === null) {
-                            alert('This aggregator does not exist');
+                            alert('This hive does not have any logs');
                         } else {
                             logs = snapshot.val();
                             $.each(logs, function(key, value) {
@@ -67,7 +67,8 @@
                             samples = snapshot.val(); // the sample ids
                             var sample_data = [];
                             $.each(samples, function(key, value) {
-                                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/' + value);
+                                console.log(value);
+                                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/samples/' + value.name);
                                 firebase.on('value', function(snapshot) {
 
                                     // Build JSON of JSONs here!!
@@ -75,19 +76,20 @@
                                     sample_data.push({
                                         date: sample.date,
                                         temperature: sample.temperature
-                                    }); console.log(sample_data);
+                                    });
+                                    console.log(sample_data);
                                     data = d3.values(sample_data);
 
                                     // D3 render this data
                                     data.forEach(function(d) {
-                                        d.time = parseDate(d.date)
+                                        d.date = parseDate(d.date)
                                         if (isNaN(d.temperature)) {
                                             d.temperature = +0;
                                         } else {
                                             d.temperature = +d.temperature;
                                         }
                                     });
-                                    x.domain(d3.extent(data, function(d) { return d.time; }));
+                                    x.domain(d3.extent(data, function(d) { return d.date; }));
                                     y.domain(d3.extent(data, function(d) { return d.temperature; }));
                                     svg.append("g")
                                         .attr("class", "x axis")
@@ -115,7 +117,7 @@
                                         .append("circle")
                                         .attr("class", "dot")
                                         .attr("r", 1.0)
-                                        .attr("cx", function(d) { return x(d.time); })
+                                        .attr("cx", function(d) { return x(d.date); })
                                         .attr("cy", function(d) { return y(d.temperature); })
                                         .style("fill", function(d) { return color(d.node); })
                                         .style("stroke", function(d) { return color(d.node); })
