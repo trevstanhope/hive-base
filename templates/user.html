@@ -11,21 +11,51 @@
     <body>
         <center>
             <script>
-                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}/aggregators');
-                firebase.on('value', function(snapshot) {
-                    if(snapshot.val() === null) {
-                        alert('No data for {{ username }} exists');
-                    } else {
-                        user = snapshot.val();
-                        $.each(user, function(key, value) {
-                            var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/aggregators/' + value);
-                            firebase.once('value', function(snapshot) {
-                                aggregator = snapshot.val();
-                                $("center").append('<p><a href=/aggregator/' + value + '>' + aggregator.name + '</a></p>');
+            
+                // Bubbles Graph
+                // Color is aggregator, size is num of samples
+                (function() {
+                    var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}/aggregators');
+                    var diameter = 960,
+                        format = d3.format(",d"),
+                        color = d3.scale.category20c();
+                    var bubble = d3.layout.pack()
+                        .sort(null)
+                        .size([diameter, diameter])
+                        .padding(1.5);
+                    var svg = d3.select("body").append("svg")
+                        .attr("width", diameter)
+                        .attr("height", diameter)
+                        .attr("class", "bubble");
+                    var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}/aggregators');
+                    firebase.on('value', function(snapshot) {
+                        if(snapshot.val() === null) {
+                            alert('This user does not exist');
+                        } else {
+                            aggregators = snapshot.val(); // the sample ids
+                            console.log(aggregators);
+                        }
+                    });
+                })();
+                
+                // Aggregators List
+                (function() {
+                    var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/users/{{ username }}/aggregators');
+                    firebase.on('value', function(snapshot) {
+                        if(snapshot.val() === null) {
+                            alert('No data for {{ username }} exists');
+                        } else {
+                            user = snapshot.val();
+                            $.each(user, function(key, value) {
+                                var firebase = new Firebase('https://{{ firebase }}.firebaseio.com/aggregators/' + value);
+                                firebase.once('value', function(snapshot) {
+                                    aggregator = snapshot.val();
+                                    $("center").append('<p><a href=/aggregator/' + value + '>' + aggregator.name + '</a></p>');
+                                });
                             });
-                        });
-                    }
-                });
+                        }
+                    });
+                })(); 
             </script>
         </center>
     </body>
